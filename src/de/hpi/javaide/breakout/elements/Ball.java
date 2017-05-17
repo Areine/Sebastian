@@ -2,6 +2,7 @@ package de.hpi.javaide.breakout.elements;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import de.hpi.javaide.breakout.basics.Elliptic;
 import de.hpi.javaide.breakout.basics.Vector;
@@ -19,50 +20,58 @@ import de.hpi.javaide.breakout.starter.Game;
 // Vermutlich sollte er die Richtung ändern können und sehr wahrscheinlich wird
 // früher oder später
 // jemand wissen wollen in welche Richtung er fliegt.
-public class Ball extends Elliptic {
+public class Ball extends Elliptic
+{
 
 	private Vector direction = new Vector(0.7f, -0.7f);
 	private BallStatus status = BallStatus.IN_DEPOT;
 
-	public Ball(Game game, Point position) {
+	public Ball(Game game, Point position)
+	{
 		super(game, position, new Dimension(10, 10));
 	}
 
-	public BallStatus getStatus() {
+	public BallStatus getStatus()
+	{
 		return status;
 	}
 
 	public boolean activate()
 	{
-		if(status == BallStatus.IN_DEPOT)
+		if (status == BallStatus.IN_DEPOT)
 		{
 			status = BallStatus.ACTIVE;
 			return true;
-		}
-		else
+		} else
 		{
 			return false;
 		}
 	}
-	
-	public boolean isLost() {
-		if (status == BallStatus.LOST) {
+
+	public boolean isLost()
+	{
+		if (status == BallStatus.LOST)
+		{
 			return true;
-		} else {
+		} else
+		{
 			return false;
 		}
 	}
 
 	@Override
-	public void display() {
-		if (isLost()) {
+	public void display()
+	{
+		if (isLost())
+		{
 			return;
 		}
 		validatePosition();
 		game.ellipse((float) getX(), (float) getY(), (float) getHeight(), (float) getWidth());
 	}
 
-	public void move() {
+	public void move()
+	{
 		float currentSpeed = game.getCurrentSpeed();
 		Vector step = new Vector(direction.getX() * currentSpeed, direction.getY() * currentSpeed);
 		Point newPosition = new Point(getX() + (int) step.getX(), getY() + (int) step.getY());
@@ -70,48 +79,84 @@ public class Ball extends Elliptic {
 		validatePosition();
 	}
 
-	private void validatePosition() {
-		if (getY() > game.height) {
+	private void validatePosition()
+	{
+		if (getY() > game.height)
+		{
 			status = BallStatus.LOST;
 		}
 	}
 
-	public void checkCollision(Game game, Paddle paddle, Wall wall) {
-
-		if (checkCollisionWithPaddle(paddle)) {
+	public void checkCollision(Game game, Paddle paddle, Wall wall)
+	{
+		if (checkCollisionWithPaddle(paddle))
+		{
+			return;
+		}
+		if (checkCollisionWithWall(wall))
+		{
 			return;
 		}
 		checkCollisionWithGameBorder(game);
 	}
 
-	private boolean checkCollisionWithPaddle(Paddle paddle) {
-		if ((getRect()).intersects(paddle.getRect())) {
+	private boolean checkCollisionWithPaddle(Paddle paddle)
+	{
+		if ((getRect()).intersects(paddle.getRect()))
+		{
 			invertYDirection();
 			return true;
-		} else {
+		} else
+		{
 			return false;
 		}
 	}
 
-	private void checkCollisionWithGameBorder(Game game) {
-		if (position.x <= 5) {
+	private boolean checkCollisionWithWall(Wall wall)
+	{
+		for (Brick brick : wall)
+		{
+			if ((getRect()).intersects(brick.getRect()))
+			{
+				invertYDirection();
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void checkCollisionWithGameBorder(Game game)
+	{
+		if (position.x <= 5)
+		{
 			invertXDirection();
-		} else if (position.x >= (game.getWidth() - 5)) {
+		} else if (position.x >= (game.getWidth() - 5))
+		{
 			invertXDirection();
 		}
 
-		if (position.y <= 5) {
+		if (position.y <= 5)
+		{
 			invertYDirection();
-		} else if (position.y >= (game.getHeight() - 5)) {
+		} else if (position.y >= (game.getHeight() - 5))
+		{
 			status = BallStatus.LOST;
 		}
 	}
 
-	private void invertYDirection() {
+	private void invertYDirection()
+	{
 		direction.setY(-direction.getY());
 	}
 
-	private void invertXDirection() {
+	private void invertXDirection()
+	{
 		direction.setX(-direction.getX());
 	}
+
+	public Rectangle getRect()
+	{
+		return new Rectangle(position.x - 5, position.y - 5, dimension.width + 10, dimension.height + 10);
+	}
+
 }

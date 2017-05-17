@@ -11,6 +11,7 @@ public class Timer extends UIObject {
 	public Timer(Game game) {
 		super(game);
 		seconds = 60;
+
 	}
 
 	@Override
@@ -23,7 +24,8 @@ public class Timer extends UIObject {
 	@Override
 	public void update(String input)
 	{
+			   		        }
 		// TODO Auto-generated method stub
 		
 	}
-}
+
