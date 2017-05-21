@@ -2,6 +2,7 @@ package de.hpi.javaide.breakout.elements;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import de.hpi.javaide.breakout.basics.Rectangular;
 import de.hpi.javaide.breakout.starter.Game;
@@ -28,12 +29,13 @@ public class Brick extends Rectangular
 	public void nextStatus()
 	{
 		this.structure--;
+
 		if (this.structure == 2)
 		{
-			setColor(0, 255, 0);
+			setColor(100, 100, 100);
 		} else if (this.structure == 1)
 		{
-			setColor(0, 0, 255);
+			setColor(200, 200, 200);
 		} else if (this.structure == 0)
 		{
 			dead = true;
@@ -44,10 +46,19 @@ public class Brick extends Rectangular
 	public void display()
 	{
 		// TODO Auto-generated method stub
-		game.rectMode(PApplet.CORNER);
-		game.noStroke();
-		game.fill(getR(), getG(), getB());
-		game.rect(getX(), getY(), getWidth(), getHeight());
+
+		if (!dead)
+		{
+			game.rectMode(PApplet.CORNER);
+			game.noStroke();
+			game.fill(getR(), getG(), getB());
+			game.rect(getX(), getY(), getWidth(), getHeight());
+		}
+	}
+
+	public Rectangle getRect()
+	{
+		return new Rectangle(position.x, position.y, dimension.width, dimension.height);
 	}
 
 }

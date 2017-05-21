@@ -1,6 +1,7 @@
 package de.hpi.javaide.breakout.starter;
 
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 
 import de.hpi.javaide.breakout.basics.Font;
 import de.hpi.javaide.breakout.screens.Screen;
@@ -8,30 +9,36 @@ import de.hpi.javaide.breakout.screens.ScreenManager;
 import processing.core.PApplet;
 
 @SuppressWarnings("serial")
-public class Game extends PApplet implements GameConstants {
+public class Game extends PApplet implements GameConstants
+{
 
-	private float currentSpeed = 5;
+	private float currentSpeed = 8;
 	private Point defaultBallStartPoint = new Point(50, 400);
 
-	public float getCurrentSpeed() {
+	public float getCurrentSpeed()
+	{
 		return currentSpeed;
 	}
 
-	public void setCurrentSpeed(float currentSpeed) {
+	public void setCurrentSpeed(float currentSpeed)
+	{
 		this.currentSpeed = currentSpeed;
 	}
 
-	public Point getDefaultBallStartPoint() {
+	public Point getDefaultBallStartPoint()
+	{
 		return new Point(defaultBallStartPoint.x, defaultBallStartPoint.y);
 	}
 
-	public void setDefaultBallStartPoint(Point defaultBallStartPoint) {
+	public void setDefaultBallStartPoint(Point defaultBallStartPoint)
+	{
 		this.defaultBallStartPoint = defaultBallStartPoint;
 	}
 
 	// Setup the game
 	@Override
-	public void setup() {
+	public void setup()
+	{
 		size(SCREEN_X, SCREEN_Y);
 		background(0);
 		frameRate(30);
@@ -41,7 +48,8 @@ public class Game extends PApplet implements GameConstants {
 
 	// Update and draw everything in the game
 	@Override
-	public void draw() {
+	public void draw()
+	{
 		background(0);
 		ScreenManager.getCurrentScreen().update();
 		ScreenManager.getCurrentScreen().display();
@@ -49,24 +57,29 @@ public class Game extends PApplet implements GameConstants {
 
 	// Interact with the mouse
 	@Override
-	public void mouseMoved() {
+	public void mouseMoved()
+	{
 
 	}
 
 	@Override
-	public void mouseDragged() {
+	public void mouseDragged()
+	{
 		ScreenManager.getCurrentScreen().handleMouseDragged();
 	}
 
 	// Interact with the keyboard
 	@Override
-	public void keyPressed() {
-		switch (key) {
+	public void keyPressed()
+	{
+		switch (key)
+		{
 		case RETURN:
 		case ENTER:
 			ScreenManager.getCurrentScreen().handleKeyPressed(Screen.KEY_ENTER);
 			break;
-		case TAB: {
+		case TAB:
+		{
 			ScreenManager.getCurrentScreen().handleKeyPressed(Screen.KEY_SPACE);
 			break;
 		}
@@ -77,11 +90,21 @@ public class Game extends PApplet implements GameConstants {
 	}
 
 	@Override
-	public void keyReleased() {
+	public void keyReleased()
+	{
 
 	}
 
-	public void increaseScore(int i) {
+	public void increaseScore(int i)
+	{
 		ScreenManager.getCurrentScreen().increaseScore(i);
+	}
+
+	public void mouseClicked(MouseEvent me)
+	{
+		// Save the coordinates of the click lke this.
+		int xpos = me.getX();
+		int ypos = me.getY();
+		System.out.println("Clicked: " + xpos + "/" + ypos);
 	}
 }

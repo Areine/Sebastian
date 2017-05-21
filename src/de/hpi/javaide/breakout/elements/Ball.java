@@ -67,6 +67,7 @@ public class Ball extends Elliptic
 			return;
 		}
 		validatePosition();
+		game.fill(255);
 		game.ellipse((float) getX(), (float) getY(), (float) getHeight(), (float) getWidth());
 	}
 
@@ -102,9 +103,35 @@ public class Ball extends Elliptic
 
 	private boolean checkCollisionWithPaddle(Paddle paddle)
 	{
-		if ((getRect()).intersects(paddle.getRect()))
+		Rectangle ballRect = getRect();
+		Rectangle paddleRect = paddle.getRect();
+		if (ballRect.intersects(paddleRect))
 		{
-			invertYDirection();
+			int ballLeft = (int) ballRect.getMinX();
+			int ballHeight = (int) ballRect.getHeight();
+			int ballWidth = (int) ballRect.getWidth();
+			int ballTop = (int) ballRect.getMinY();
+
+			Point pointRight = new Point(ballLeft + ballWidth + 1, ballTop);
+			Point pointLeft = new Point(ballLeft - 1, ballTop);
+			Point pointTop = new Point(ballLeft, ballTop - 1);
+			Point pointBottom = new Point(ballLeft, ballTop + ballHeight + 1);
+
+			if (paddleRect.contains(pointRight))
+			{
+				invertXDirection();
+			} else if (paddleRect.contains(pointLeft))
+			{
+				invertXDirection();
+			}
+
+			if (paddleRect.contains(pointTop))
+			{
+				invertYDirection();
+			} else if (paddleRect.contains(pointBottom))
+			{
+				invertYDirection();
+			}
 			return true;
 		} else
 		{
@@ -114,11 +141,40 @@ public class Ball extends Elliptic
 
 	private boolean checkCollisionWithWall(Wall wall)
 	{
-		for (Brick brick : wall)
+		Brick[] activeBricks = wall.getActiveBricks();
+		for (Brick brick : activeBricks)
 		{
-			if ((getRect()).intersects(brick.getRect()))
+			Rectangle ballRect = getRect();
+			Rectangle currentBrickRect = brick.getRect();
+			if (currentBrickRect.intersects(ballRect))
 			{
-				invertYDirection();
+				int ballLeft = (int) ballRect.getMinX();
+				int ballHeight = (int) ballRect.getHeight();
+				int ballWidth = (int) ballRect.getWidth();
+				int ballTop = (int) ballRect.getMinY();
+				int ballMiddleY = ballTop + ballHeight / 2;
+
+				Point pointRight = new Point(ballLeft + ballWidth + 1, ballMiddleY);
+				Point pointLeft = new Point(ballLeft - 1, ballMiddleY);
+				Point pointTop = new Point(ballLeft, ballTop - 1);
+				Point pointBottom = new Point(ballLeft, ballTop + ballHeight + 1);
+
+				if (currentBrickRect.contains(pointRight))
+				{
+					invertXDirection();
+				} else if (currentBrickRect.contains(pointLeft))
+				{
+					invertXDirection();
+				}
+
+				if (currentBrickRect.contains(pointTop))
+				{
+					invertYDirection();
+				} else if (currentBrickRect.contains(pointBottom))
+				{
+					invertYDirection();
+				}
+				brick.nextStatus();
 				return true;
 			}
 		}
@@ -156,7 +212,7 @@ public class Ball extends Elliptic
 
 	public Rectangle getRect()
 	{
-		return new Rectangle(position.x - 5, position.y - 5, dimension.width + 10, dimension.height + 10);
+		return new Rectangle(position.x - 5, position.y - 5, dimension.width, dimension.height);
 	}
 
 }

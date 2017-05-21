@@ -43,6 +43,22 @@ public class Wall implements Displayable, Iterable<Brick>
 		return wall.iterator();
 	}
 
+	public Brick[] getActiveBricks()
+	{
+		ArrayList<Brick> result = new ArrayList<Brick>();
+		for (Brick brick : wall)
+		{
+			if (brick.isDead())
+			{
+				continue;
+			} else
+			{
+				result.add(brick);
+			}
+		}
+		return result.toArray(new Brick[result.size()]);
+	}
+
 	/**
 	 * Build the wall by putting the single bricks into their position Hint: You
 	 * might want to use one or two for-loops

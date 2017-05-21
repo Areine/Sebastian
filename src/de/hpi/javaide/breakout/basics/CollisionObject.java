@@ -17,7 +17,8 @@ import de.hpi.javaide.breakout.starter.Game;
  * @author Ralf Teusner and Tom Staubitz
  *
  */
-public abstract class CollisionObject implements Collidable, Displayable, Colorable {
+public abstract class CollisionObject implements Collidable, Displayable, Colorable
+{
 
 	/**
 	 * the geometrical Shape that defines the form of the object.
@@ -51,7 +52,8 @@ public abstract class CollisionObject implements Collidable, Displayable, Colora
 	 * @param dimension
 	 *            Dimension, the width and height of the object
 	 */
-	public CollisionObject(Game game, Point position, Dimension dimension) {
+	public CollisionObject(Game game, Point position, Dimension dimension)
+	{
 		this.game = game;
 		this.position = position;
 		this.dimension = dimension;
@@ -59,58 +61,70 @@ public abstract class CollisionObject implements Collidable, Displayable, Colora
 	}
 
 	@Override
-	public int getWidth() {
+	public int getWidth()
+	{
 		return dimension.width;
 	}
 
 	@Override
-	public int getHeight() {
+	public int getHeight()
+	{
 		return dimension.height;
 	}
 
 	@Override
-	public int getX() {
+	public int getX()
+	{
 		return position.x;
 	}
 
 	@Override
-	public int getY() {
+	public int getY()
+	{
 		return position.y;
 	}
 
 	@Override
-	public int getR() {
+	public int getR()
+	{
 		return color.getR();
 	}
 
 	@Override
-	public int getG() {
+	public int getG()
+	{
 		return color.getG();
 	}
 
 	@Override
-	public int getB() {
+	public int getB()
+	{
 		return color.getB();
 	}
 
 	@Override
-	public void setColor(int r, int g, int b) {
+	public void setColor(int r, int g, int b)
+	{
 		this.color = new Color(r, g, b);
 	}
 
 	@Override
-	public Shape getGeometry() {
+	public Shape getGeometry()
+	{
 		return this.geometry;
 	}
 
 	@Override
-	public void update(Point position, Dimension dimension) {
+	public void update(Point position, Dimension dimension)
+	{
 		this.position = position;
 		this.dimension = dimension;
 	}
 
-	public Rectangle getRect() {
-		return new Rectangle(position.x, position.y, dimension.width, dimension.height);
+	public Rectangle getRect()
+	{
+		return new Rectangle(position.x - dimension.width / 2, position.y - dimension.height / 2, dimension.width,
+				dimension.height);
 	}
 
 }
